@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+    <title>Glycemic Index</title>
+
+    <link href="css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
+    <link href="http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.css
+" rel="stylesheet">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="js/jquery.dataTables.js"></script>
+    <script src="http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="js/bootstrap-paginator.min.js"></script>
+
+    <style type="text/css" media="screen">
+        td.highlight {
+        font-weight: bold;
+        color: red;
+    }
+    .hidden {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#example').dataTable( {
+                "ajax": "data.json"
+            } );
+        } );
+    </script>
+
+    <table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Food</th>
+                <th>Glycemic index (glucose = 100)</th>
+                <th>Serving size (grams)</th>
+                <th>Glycemic load per serving</th>
+            </tr>
+        </thead>
+ 
+        <tfoot>
+            <tr>
+                <th>Food</th>
+                <th>Glycemic index (glucose = 100)</th>
+                <th>Serving size (grams)</th>
+                <th>Glycemic load per serving</th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
