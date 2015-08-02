@@ -7,8 +7,7 @@
 
     <link href="css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
-    <link href="http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.css
-" rel="stylesheet">
+    <link href="http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.css" rel="stylesheet">
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="js/jquery.dataTables.js"></script>
@@ -93,26 +92,31 @@
         function gi_value(value) {
             var idx = value.indexOf("±");
             if( idx > -1 ){
-                deviation = value.substring(idx + 1);
-                value = value.substring(0, idx);
-                return parseInt(value) + parseInt(deviation); // being pessimistic, use worst case
+                deviation = parseInt(value.substring(idx + 1));
+                value = parseInt(value.substring(0, idx));
+                return [value, deviation];
             } else {
-                return parseInt(value);
+                return [parseInt(value), 0];
             }
         }
 
-        jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-            "num-gi-pre": function ( a ) {
-                var value = String(a);
-                return gi_value(value);
-            },
+        function comparator(a, b, tie) {
+            return ((a < b) ? -1 : ((a > b) ? 1 : tie));
+        }
 
+        function gi_comparator(a, b) {
+            var gi_a = gi_value(a);
+            var gi_b = gi_value(b);
+            return comparator(gi_a[0] + gi_a[1], gi_b[0] + gi_b[1], comparator(gi_a[0], gi_b[0], 0))
+        }
+
+        jQuery.extend( jQuery.fn.dataTableExt.oSort, {
             "num-gi-asc": function ( a, b ) {
-                return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+                return gi_comparator(a, b)
             },
 
             "num-gi-desc": function ( a, b ) {
-                return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+                return -1 * gi_comparator(a, b)
             }
         } );
 
@@ -135,7 +139,8 @@
                 "rowCallback": function( nRow, aData ) {
                     var colorCell = function (index, highLevel, lowLevel) {
                         var element = $('td:eq('+index+')', nRow);
-                        var value = gi_value(aData[index]);
+                        var gi = gi_value(aData[index]);
+                        var value = gi[0] + gi[1];
                         if( value >= highLevel ) element.addClass('high');
                         else if( value <= lowLevel ) element.addClass('low');
                         else element.addClass('medium');
