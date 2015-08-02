@@ -67,11 +67,27 @@
     </table>
 
     <script type="text/javascript">
+        function registerColumnSearch(table, tableName){
+            var footer = $(tableName + ' tfoot th')
+
+            footer.each( function () {
+                var title = footer.eq( $(this).index() ).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            } );
+
+            table.columns().eq( 0 ).each( function ( colIdx ) {
+                $('input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
+                  table.column( colIdx ).search( this.value ).draw();
+                });
+            });
+        }
+
         $(document).ready(function() {
-            $('#gi-table').dataTable( {
+            var table = $('#gi-table').dataTable( {
                 "ajax": "data.json"
             } );
-        } );
+            registerColumnSearch(table.api(), "#gi-table")
+        });
     </script>
 
 </body>
