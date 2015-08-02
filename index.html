@@ -84,7 +84,9 @@
 
         $(document).ready(function() {
             var table = $('#gi-table').dataTable( {
-                "ajax": "data.json"
+                "ajax": "data.json",
+                "lengthMenu": [ 10, 25, 50, 100, 250, 500, 1000, 2000 ],
+                "pageLength": 10,
             } );
             registerColumnSearch(table.api(), "#gi-table")
         });
