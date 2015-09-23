@@ -57,9 +57,9 @@
                 <th>Subcategory</th>
                 <th>Glycemic index (glucose = 100)</th>
                 <th>Glycemic index (bread = 100)</th>
-                <th>Serving size (grams)</th>
-                <th>Carbo-hydrate (grams)</th>
-                <th>Glycemic load per serving</th>
+                <th>Carbohydrate (per 100 g)</th>
+                <th>Glycemic load (per serving)</th>
+                <th>Serving size (g)</th>
             </tr>
         </thead>
  
@@ -70,9 +70,9 @@
                 <th>subcategory</th>
                 <th>glycemic index</th>
                 <th>glycemic index</th>
-                <th>serving size</th>
-                <th>carbo-hydrate</th>
+                <th>carbohydrate</th>
                 <th>glycemic load</th>
+                <th>serving size</th>
             </tr>
         </tfoot>
     </table>
@@ -134,11 +134,11 @@
                     { "type": "string" },
                     { "type": "string" },
                     { "type": "string" },
-                    { "type": "num-gi" },
-                    { "type": "num" },
-                    { "type": "num" },
-                    { "type": "num" },
-                    { "type": "num" }
+                    { "type": "num-gi", "class" : "center" },
+                    { "type": "num", "class" : "center" },
+                    { "type": "num", "class" : "center" },
+                    { "type": "num", "class" : "center" },
+                    { "type": "num", "class" : "center" }
                 ],
                 "rowCallback": function( nRow, aData ) {
                     var colorCell = function (index, highLevel, lowLevel) {
@@ -150,7 +150,7 @@
                         else element.addClass('medium');
                     }
                     colorCell(3, 70, 55);
-                    colorCell(7, 20, 10);
+                    colorCell(6, 20, 10);
                   return nRow;
                 }
             } );
