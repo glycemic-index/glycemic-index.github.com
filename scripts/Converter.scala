@@ -3,18 +3,28 @@ import scala.io.Codec
 object Converter extends App {
 
   case class FoodStuff(food: String, mainCat: String, subCat: String, giGlucose: String, giBread: String,
-    subjects: String, refFood: String, ref: String, serveSize: String, ch: String, gl: String) {
+    subjects: String, refFood: String, ref: String, ch: String, gl: String, serveSize: String) {
 
     override def toString: String =
-      s"""["$food", "$mainCat", "$subCat", "$giGlucose", "$giBread", "$serveSize", "$ch", "$gl"]"""
+      s"""["$food", "$mainCat", "$subCat", "$giGlucose", "$giBread", "$ch", "$gl", "$serveSize"]"""
   }
 
   object FoodStuff {
     def apply(str: String, mainCat: String, subCat: String): FoodStuff = {
       val splitted = str.split('|')
       require(splitted.size == 10, s"wrong column count: ${splitted.size}, str: $str")
+      val normalizedCarbs = if(splitted(8).contains("-")) splitted(8)
+                            else {
+                              val servingSize = splitted(7)
+                                .replaceAll("mL", "")
+                                .replaceAll("""\(dry\)""", "")
+                                .replaceAll("""\(raw\)""", "")
+                                .trim.toDouble
+                              val carbs = splitted(8).toDouble
+                              ((100 / servingSize) * carbs).toInt
+                            }
       FoodStuff(splitted(1), mainCat, subCat, splitted(2), splitted(3), splitted(4),
-        splitted(5), splitted(6), splitted(7), splitted(8), splitted(9))
+        splitted(5), splitted(6), normalizedCarbs.toString, splitted(9), splitted(7))
     }
   }
 
